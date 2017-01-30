@@ -65,14 +65,21 @@ RUN { \
 RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/mysql.conf.d/mysqld.cnf \
 	&& echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
 
+
+# Setup Mysql character to utf-8
+### Idea from http://outofcontrol.ca/blog/comments/change-mysql-5.5-default-character-set-to-utf8
+RUN sed -i "/default-character-set/d" /etc/mysql/mysql.conf.d/mysqld.cnf
+RUN sed -i "/\[mysqld]/a skip-character-set-client-handshake" /etc/mysql/mysql.conf.d/mysqld.cnf
+RUN sed -i "/\[mysqld]/a collation-server=utf8_unicode_ci" /etc/mysql/mysql.conf.d/mysqld.cnf
+RUN sed -i "/\[mysqld]/a character-set-server=utf8" /etc/mysql/mysql.conf.d/mysqld.cnf
+RUN sed -i "/\[mysqld]/a init_connect= 'SET NAMES utf8' " /etc/mysql/mysql.conf.d/mysqld.cnf
+RUN sed -i "/\[mysqld]/a init_connect=‘SET collation_connection = utf8_unicode_ci' " /etc/mysql/mysql.conf.d/mysqld.cnf
+
+
 VOLUME /var/lib/mysql
 
 COPY docker-entrypoint.sh /usr/local/bin/
-
-RUN \
-chmod a+x /usr/local/bin/docker-entrypoint.sh && \
-ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh 
-
+RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 3306

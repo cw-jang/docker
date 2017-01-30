@@ -321,6 +321,7 @@ RUN chown $USER_ID:$USER_ID /home/$USER_ID/.*
 RUN chown -R $USER_ID:$USER_ID /home/$USER_ID/.ipython
 RUN chown -R $USER_ID:$USER_ID /home/$USER_ID/.jupyter
 #RUN chown -R $USER_ID:$USER_ID /home/$USER_ID/.local
+RUN mkdir -p /works
 
 USER root
 
@@ -328,5 +329,6 @@ USER root
 # RUN chown -R $USER_ID:$USER_ID /usr/local/lib/R/site-library
 # fix R cpp version conflict
 # RUN rm -rf /usr/lib/R/site-library/Rcpp
+
 
 ENTRYPOINT ["/usr/bin/tini", "--", "/bin/bash", ".docker-entrypoint.sh"]
