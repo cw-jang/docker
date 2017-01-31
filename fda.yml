@@ -15,4 +15,4 @@ rpy:
     links:
         - mysql:mysql
     volumes:
-        - /backup/home:/home
+        - /backup/work:/work

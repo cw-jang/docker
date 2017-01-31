@@ -173,7 +173,7 @@ pip3 install -U pip && \
 pip3 install numpy cython pandas pandas_datareader && \
 pip3 install ipython pyzmq tornado matplotlib jinja2 pygments jupyter && \
 pip3 install requests lxml beautifulsoup4 xlrd && \
-pip3 install ipyparallel
+pip3 install ipyparallel mysql-connector seaborn
 
 
 # Additional pip packages
